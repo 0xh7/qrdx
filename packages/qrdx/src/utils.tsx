@@ -930,13 +930,13 @@ export function QRCodeSVG(props: QRPropsSVG) {
       </defs>
 
       {/* Background */}
-      <rect fill={bgFillValue} height={size} width={size} x={0} y={0} />
+      <rect className="fill-bgColor" fill={bgFillValue} height={size} width={size} x={0} y={0} />
 
       {/* Data module circles */}
-      <g fill={fgFillValue}>{dataCircles}</g>
+      <g className="fill-fgColor" fill={fgFillValue}>{dataCircles}</g>
 
       {/* Top-left corner square */}
-      <g fill={topLeftEyeFillValue}>
+      <g className="fill-eyeColor" fill={topLeftEyeFillValue}>
         <path
           clipRule="evenodd"
           d={topLeftEye}
@@ -945,10 +945,10 @@ export function QRCodeSVG(props: QRPropsSVG) {
       </g>
 
       {/* Top-left corner dot */}
-      <g fill={topLeftDotFillValue}>{topLeftDot}</g>
+      <g className="fill-dotColor" fill={topLeftDotFillValue}>{topLeftDot}</g>
 
       {/* Top-right corner square */}
-      <g fill={topRightEyeFillValue}>
+      <g className="fill-eyeColor" fill={topRightEyeFillValue}>
         <path
           clipRule="evenodd"
           d={topRightEye}
@@ -957,10 +957,10 @@ export function QRCodeSVG(props: QRPropsSVG) {
       </g>
 
       {/* Top-right corner dot */}
-      <g fill={topRightDotFillValue}>{topRightDot}</g>
+      <g className="fill-dotColor" fill={topRightDotFillValue}>{topRightDot}</g>
 
       {/* Bottom-left corner square */}
-      <g fill={bottomLeftEyeFillValue}>
+      <g className="fill-eyeColor" fill={bottomLeftEyeFillValue}>
         <path
           clipRule="evenodd"
           d={bottomLeftEye}
@@ -969,7 +969,7 @@ export function QRCodeSVG(props: QRPropsSVG) {
       </g>
 
       {/* Bottom-left corner dot */}
-      <g fill={bottomLeftDotFillValue}>{bottomLeftDot}</g>
+      <g className="fill-dotColor" fill={bottomLeftDotFillValue}>{bottomLeftDot}</g>
 
       {image}
     </>

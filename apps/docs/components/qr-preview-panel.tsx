@@ -1,9 +1,13 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: inspector needs mouse events */
 "use client";
 
 import type React from "react";
 import { lazy } from "react";
+import { useThemeInspector } from "@/lib/hooks/inspector/use-theme-inspector";
 import { useQREditorStore } from "@/store/editor-store";
+import { usePreferencesStore } from "@/store/preferences-store";
 import type { QRStyle } from "@/types/theme";
+import InspectorOverlay from "./editor/inspector-overlay";
 import ExamplesPreviewContainer from "./editor/theme-preview/examples-preview-container";
 import { QrdxLogoAnimation } from "./qrdx-logo-animation";
 
@@ -17,6 +21,9 @@ const QRCode = lazy(() =>
 
 const QRPreviewPanel: React.FC<QRPreviewPanelProps> = ({ style }) => {
   const { value } = useQREditorStore();
+  const { inspector, inspectorEnabled } = usePreferencesStore();
+
+  const { rootRef, handleMouseMove, handleMouseLeave } = useThemeInspector();
 
   // Check if value is empty or invalid
   const hasValidContent = value && value.trim().length > 0;
@@ -48,7 +55,12 @@ const QRPreviewPanel: React.FC<QRPreviewPanelProps> = ({ style }) => {
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Preview Content */}
       <div className="relative flex size-full items-center justify-center overflow-hidden p-4">
-        <div className="relative isolate flex size-full items-center justify-center overflow-hidden rounded-lg p-8">
+        <div
+          ref={rootRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="relative isolate flex size-full items-center justify-center overflow-hidden rounded-lg p-8"
+        >
           <ExamplesPreviewContainer className="size-full">
             <QRCode
               bgColor={style.bgColor}
@@ -68,6 +80,8 @@ const QRPreviewPanel: React.FC<QRPreviewPanelProps> = ({ style }) => {
           </ExamplesPreviewContainer>
         </div>
       </div>
+
+      <InspectorOverlay inspector={inspector} enabled={inspectorEnabled} />
     </div>
   );
 };

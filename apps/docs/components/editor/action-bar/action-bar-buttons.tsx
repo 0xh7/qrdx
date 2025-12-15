@@ -1,6 +1,11 @@
+import { Button } from "@repo/design-system/components/ui/button";
 import { Separator } from "@repo/design-system/components/ui/separator";
+import { cn } from "@repo/design-system/lib/utils";
+import { Inspect } from "lucide-react";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { useAIQRGenerationCore } from "@/lib/hooks/use-ai-qr-generation-core";
 import { useQREditorStore } from "@/store/editor-store";
+import { usePreferencesStore } from "@/store/preferences-store";
 import { useThemePresetStore } from "@/store/theme-preset-store";
 import { ThemeToggle } from "../../theme-toggle";
 import ContrastChecker from "../contrast-checker";
@@ -33,6 +38,8 @@ export function ActionBarButtons({
     : undefined;
   const isSavedPreset = !!currentPreset && currentPreset.source === "SAVED";
 
+  const { inspectorEnabled, toggleInspector } = usePreferencesStore();
+
   const handleReset = () => {
     resetToCurrentPreset();
   };
@@ -48,6 +55,22 @@ export function ActionBarButtons({
       </div>
 
       <div className="flex items-center gap-1">
+        <TooltipWrapper label="Toggle Inspector" asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleInspector}
+            className={cn(
+              "group size-8",
+              inspectorEnabled && "bg-accent text-accent-foreground w-auto",
+            )}
+          >
+            <Inspect className="transition-all group-hover:scale-120" />
+            {inspectorEnabled && (
+              <span className="text-xs tracking-wide uppercase">on</span>
+            )}
+          </Button>
+        </TooltipWrapper>
         <ContrastChecker
           currentStyles={themeState.styles}
           disabled={isGenerating}

@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: false positive */
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 /** biome-ignore-all lint/a11y/useAriaPropsSupportedByRole: false positive */
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: false positive */
 "use client";
@@ -26,12 +27,15 @@ import {
 import type { ColorConfig, GradientStop } from "qrdx/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import type { FocusColorId } from "@/store/color-control-focus-store";
+import { useColorControlFocus } from "@/store/color-control-focus-store";
 
 interface GradientPickerProps {
   value: ColorConfig | undefined;
   onChange: (value: ColorConfig) => void;
   label: string;
   fallbackColor?: string;
+  colorId?: FocusColorId;
 }
 
 type ColorMode = "solid" | "linear" | "radial";
@@ -332,7 +336,18 @@ export function GradientPicker({
   onChange,
   label,
   fallbackColor = "#000000",
+  colorId,
 }: GradientPickerProps) {
+  const { registerColor, unregisterColor, highlightTarget } =
+    useColorControlFocus();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!colorId) return;
+    registerColor(colorId, containerRef.current);
+    return () => unregisterColor(colorId);
+  }, [colorId, registerColor, unregisterColor]);
+
   // Parse current value
   const getCurrentMode = (): ColorMode => {
     if (!value || typeof value === "string") {
@@ -693,15 +708,23 @@ export function GradientPicker({
     [onChange],
   );
 
+  const isHighlighted = colorId && highlightTarget === colorId;
+
   return (
-    <div className="mb-3">
+    <div ref={containerRef} className="mb-3">
       <div className="mb-1.5 flex items-center justify-between">
         <Label className="text-xs font-medium">{label}</Label>
       </div>
 
       <Popover>
         <PopoverTrigger asChild>
-          <div className="flex w-full items-center gap-2 ">
+          <div
+            className={`flex w-full items-center gap-2 ${
+              isHighlighted
+                ? "ring-2 ring-primary ring-offset-2 ring-offset-background rounded-md"
+                : ""
+            }`}
+          >
             <div
               className="h-8 w-8 shrink-0 rounded"
               style={{ background: getGradientPreview() }}

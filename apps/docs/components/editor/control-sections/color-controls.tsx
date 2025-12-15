@@ -14,24 +14,28 @@ export function ColorControls({ style, onStyleChange }: ColorControlsProps) {
     <ControlSection title="Colors" expanded>
       <div className="space-y-3">
         <GradientPicker
+          colorId="fgColor"
           fallbackColor="#000000"
           label="QR Color"
           value={style.fgColor}
           onChange={(value) => onStyleChange({ ...style, fgColor: value })}
         />
         <GradientPicker
+          colorId="bgColor"
           fallbackColor="#ffffff"
           label="Background"
           value={style.bgColor}
           onChange={(value) => onStyleChange({ ...style, bgColor: value })}
         />
         <GradientPicker
+          colorId="eyeColor"
           fallbackColor="#000000"
           label="Eye Color"
           value={style.eyeColor}
           onChange={(value) => onStyleChange({ ...style, eyeColor: value })}
         />
         <GradientPicker
+          colorId="dotColor"
           fallbackColor="#000000"
           label="Dot Color"
           value={style.dotColor}
