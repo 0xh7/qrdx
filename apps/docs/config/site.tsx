@@ -729,12 +729,12 @@ export const siteConfig = {
         },
       ],
     },
-    // {
-    //   title: "Compare",
-    //   links: [
-    //    { id: 1, title: "QRDX", url: "/compare" },
-    //   ]
-    // }
+    {
+      title: "Compare",
+      links: [
+       { id: 1, title: "ME-QR", url: "/compare/me-qr" },
+      ]
+    }
   ],
 };
 

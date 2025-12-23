@@ -57,6 +57,17 @@ export const changelog = defineDocs({
   },
 });
 
+export const compare = defineDocs({
+  dir: "content/compare",
+  docs: {
+    schema: frontmatterSchema.extend({
+      title: z.string(),
+      website: z.string(),
+      logo: z.string(),
+    }),
+  }
+});
+
 export default defineConfig({
   plugins: [
     jsonSchema({
